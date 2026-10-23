@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="《生命之歌》· AI 科幻短片：改编自王晋康 1995 年科幻短篇，165 秒 / 33 镜，DeepSeek × 豆包 × agens × 剪映全流程 AI 制作。" />
+<meta name="theme-color" content="#0b0906" />
+<title>生命之歌 · SONG OF LIFE｜AI 科幻短片</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0906'/%3E%3Cpath d='M22 42V22h4l6 10 6-10h4v20h-4V30l-6 9-6-9v12z' fill='%23d9b27c'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Noto+Serif+SC:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============ 设计变量 ============ */
+:root {
+  --bg: #0b0906;
+  --bg-2: #110e09;
+  --bg-3: #17120c;
+  --text: #f1e9db;
+  --soft: #c9bda9;
+  --muted: #8d8172;
+  --line: rgba(241, 233, 219, 0.13);
+  --line-2: rgba(241, 233, 219, 0.28);
+  --gold: #d9b27c;
+  --red: #b8442f;
+  --blue: #4c8dff;
+  --font-display: "Fraunces", "Noto Serif SC", "Songti SC", serif;
+  --font-cn: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --margin: clamp(20px, 5vw, 88px);
+  --max: 1360px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: var(--font-sans); font-size: 16px; line-height: 1.75;
+  font-weight: 300; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+::selection { background: var(--gold); color: #17120c; }
+h1, h2, h3 { margin: 0; font-weight: 300; line-height: 1.1; }
+p { margin: 0; }
+
+/* ============ 顶部导航 ============ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 90;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px var(--margin);
+  transition: background-color .4s var(--ease), border-color .4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(11, 9, 6, 0.82);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-bottom-color: var(--line);
+}
+.nav-brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-cn); letter-spacing: .18em; }
+.nav-brand span {
+  width: 30px; height: 30px; border: 1px solid var(--line-2); border-radius: 50%;
+  display: grid; place-items: center; color: var(--gold); font-size: 13px;
+}
+.nav-links { display: flex; align-items: center; gap: clamp(16px, 2.6vw, 36px); font-size: 13px; letter-spacing: .14em; color: var(--soft); }
+.nav-links a { position: relative; padding: 5px 0; }
+.nav-links a::after {
+  content: ""; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px;
+  background: var(--gold); transform: scaleX(0); transform-origin: right;
+  transition: transform .4s var(--ease-out);
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+.nav-gh { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.nav-gh svg { width: 15px; height: 15px; }
+
+/* ============ 首屏 ============ */
+.hero {
+  position: relative; min-height: 100svh; display: flex; align-items: flex-end;
+  overflow: hidden; isolation: isolate;
+}
+.hero-media { position: absolute; inset: 0; z-index: -2; }
+.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 45%; filter: saturate(.95) contrast(1.05) brightness(.78); }
+.hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(7,5,4,.92) 0%, rgba(7,5,4,.55) 42%, rgba(7,5,4,.15) 70%, rgba(7,5,4,.5) 100%),
+    linear-gradient(0deg, var(--bg) 2%, rgba(11,9,6,.2) 40%, rgba(11,9,6,.05) 100%);
+}
+.hero-inner {
+  width: 100%; max-width: var(--max); margin: 0 auto;
+  padding: 0 var(--margin) clamp(54px, 9vh, 96px);
+}
+.kicker {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 12px; letter-spacing: .3em; color: var(--gold); margin-bottom: clamp(26px, 4vw, 40px);
+}
+.kicker i { width: 7px; height: 7px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 4px rgba(184,68,47,.18); }
+.hero-title {
+  font-family: var(--font-cn); font-weight: 300;
+  font-size: clamp(64px, 11.5vw, 168px); letter-spacing: .05em; line-height: .95;
+  text-shadow: 0 4px 30px rgba(0,0,0,.5);
+}
+.hero-en {
+  margin-top: 18px; font-family: var(--font-display); font-style: italic;
+  font-size: clamp(15px, 1.7vw, 22px); letter-spacing: .34em; color: var(--gold);
+}
+.hero-quote {
+  margin-top: clamp(26px, 4vw, 44px); max-width: 30em;
+  font-family: var(--font-cn); font-size: clamp(17px, 1.8vw, 24px); line-height: 1.9; color: var(--soft);
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: clamp(28px, 4vw, 46px); }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px;
+  border-radius: 999px; font-size: 13px; letter-spacing: .1em;
+  border: 1px solid var(--line-2);
+  transition: all .4s var(--ease);
+}
+.btn svg { width: 16px; height: 16px; }
+.btn:hover { transform: translateY(-3px); }
+.btn-play { background: var(--text); border-color: var(--text); color: #14100a; }
+.btn-play:hover { background: var(--gold); border-color: var(--gold); }
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+.hero-credits {
+  position: absolute; right: var(--margin); bottom: clamp(54px, 9vh, 96px);
+  text-align: right; font-family: var(--font-cn); font-size: 12px;
+  letter-spacing: .16em; color: rgba(241,233,219,.62); line-height: 2;
+}
+.hero-credits b { display: block; font-weight: 400; color: var(--gold); margin-bottom: 6px; }
+
+/* ============ 通用区块 ============ */
+.section { max-width: var(--max); margin: 0 auto; padding: clamp(80px, 11vw, 150px) var(--margin); }
+.section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; margin-bottom: clamp(40px, 6vw, 72px); }
+.sec-kicker { display: flex; align-items: center; gap: 12px; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.sec-kicker span { font-family: var(--font-display); color: var(--gold); letter-spacing: .05em; }
+.sec-kicker::after { content: ""; width: 36px; height: 1px; background: var(--line-2); }
+.sec-title { font-family: var(--font-cn); font-size: clamp(32px, 4.6vw, 58px); letter-spacing: .04em; }
+.sec-note { max-width: 24em; font-size: 13px; color: var(--muted); text-align: right; }
+
+/* 数据条 */
+.stats {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.stat { padding: clamp(24px, 3vw, 40px) 0; border-right: 1px solid var(--line); }
+.stat:last-child { border-right: 0; }
+.stat b { display: block; font-family: var(--font-display); font-size: clamp(30px, 3.4vw, 46px); font-weight: 300; color: var(--text); line-height: 1.1; }
+.stat b em { font-style: normal; font-size: .45em; color: var(--gold); margin-left: 4px; }
+.stat span { display: block; margin-top: 8px; font-size: 11px; letter-spacing: .18em; color: var(--muted); }
+
+/* 故事 */
+.story-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(36px, 6vw, 90px); align-items: start; }
+.story-text p { font-family: var(--font-cn); font-size: clamp(15.5px, 1.4vw, 18px); line-height: 2.15; color: var(--soft); margin-bottom: 1.3em; }
+.story-text p:first-child { font-size: clamp(18px, 1.8vw, 23px); line-height: 2; color: var(--text); }
+.acts { display: grid; gap: 2px; background: var(--line); border: 1px solid var(--line); }
+.act { display: grid; grid-template-columns: 64px 1fr; gap: 18px; padding: 22px 24px; background: var(--bg-2); }
+.act-num { font-family: var(--font-display); font-size: 13px; color: var(--gold); letter-spacing: .1em; padding-top: 4px; }
+.act h3 { font-family: var(--font-cn); font-size: 19px; letter-spacing: .06em; margin-bottom: 6px; }
+.act p { font-size: 13px; line-height: 1.9; color: var(--muted); }
+
+/* 工具链 */
+.pipeline { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; background: var(--line); border: 1px solid var(--line); }
+.pipe { position: relative; padding: clamp(24px, 2.8vw, 36px); background: var(--bg-2); transition: background-color .4s var(--ease); }
+.pipe:hover { background: var(--bg-3); }
+.pipe-step { font-family: var(--font-display); font-size: 12px; letter-spacing: .12em; color: var(--gold); }
+.pipe-tool { margin-top: 16px; font-family: var(--font-cn); font-size: clamp(20px, 2vw, 26px); letter-spacing: .04em; }
+.pipe-role { margin-top: 6px; font-size: 11px; letter-spacing: .16em; color: var(--muted); text-transform: uppercase; }
+.pipe-desc { margin-top: 16px; font-size: 13px; line-height: 1.95; color: var(--soft); }
+.pipe-out { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); letter-spacing: .04em; }
+.pipe-out b { font-weight: 400; color: var(--gold); }
+.pipeline-caption { margin-top: 20px; font-size: 13px; color: var(--muted); }
+.pipeline-caption strong { color: var(--soft); font-weight: 400; }
+
+/* 参考图 */
+.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); }
+.shot { position: relative; overflow: hidden; border-radius: 3px; background: var(--bg-3); cursor: zoom-in; }
+.shot img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform 1s var(--ease-out); }
+.shot:hover img { transform: scale(1.04); }
+.shot figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 34px 16px 14px;
+  font-size: 12px; letter-spacing: .06em; color: rgba(241,233,219,.9);
+  background: linear-gradient(to top, rgba(0,0,0,.75), transparent);
+}
+
+/* 下载 */
+.downloads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; background: var(--line); border: 1px solid var(--line); }
+.dl { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 28px clamp(22px, 3vw, 36px); background: var(--bg-2); transition: background-color .35s var(--ease); }
+.dl:hover { background: var(--bg-3); }
+.dl-name { font-family: var(--font-cn); font-size: 19px; letter-spacing: .04em; }
+.dl-meta { margin-top: 6px; font-size: 12px; color: var(--muted); letter-spacing: .06em; }
+.dl-icon { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; color: var(--gold); flex: none; transition: all .35s var(--ease); }
+.dl:hover .dl-icon { background: var(--gold); border-color: var(--gold); color: #17120c; }
+.dl-icon svg { width: 16px; height: 16px; }
+
+/* 页脚 */
+.footer { border-top: 1px solid var(--line); padding: 34px var(--margin); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 12px; letter-spacing: .06em; color: var(--muted); }
+.footer a { color: var(--soft); }
+.footer a:hover { color: var(--gold); }
+
+/* 视频弹窗 */
+.lightbox { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: clamp(12px, 3vw, 48px); }
+.lightbox[hidden] { display: none; }
+.lightbox-backdrop { position: absolute; inset: 0; background: rgba(4,3,2,.9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: 0; transition: opacity .4s var(--ease); }
+.lightbox.open .lightbox-backdrop { opacity: 1; }
+.lightbox-panel { position: relative; width: min(1180px, 100%); background: #000; border: 1px solid var(--line); box-shadow: 0 40px 120px -40px #000; opacity: 0; transform: translateY(20px); transition: opacity .4s var(--ease), transform .5s var(--ease-out); }
+.lightbox.open .lightbox-panel { opacity: 1; transform: none; }
+.lightbox video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.lightbox-close { position: absolute; top: 12px; right: 12px; z-index: 2; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.3); color: #fff; transition: all .3s var(--ease); }
+.lightbox-close:hover { background: var(--gold); border-color: var(--gold); color: #17120c; transform: rotate(90deg); }
+.lightbox-close svg { width: 18px; height: 18px; }
+
+/* 进场 */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--ease-out), transform .9s var(--ease-out); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+/* 响应式 */
+@media (max-width: 960px) {
+  .story-grid { grid-template-columns: 1fr; }
+  .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:nth-child(2) { border-right: 0; }
+  .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--line); }
+  .hero-credits { position: static; text-align: left; margin-top: 40px; }
+  .section-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .sec-note { text-align: left; }
+}
+@media (max-width: 640px) {
+  .nav-links { gap: 14px; font-size: 12px; }
+  .nav-links a:nth-child(n+3) { display: none; }
+  .nav-gh span { display: none; }
+  .gallery { grid-template-columns: 1fr; }
+  .downloads { grid-template-columns: 1fr; }
+  .pipeline { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr; }
+  .stat { border-right: 0; border-bottom: 1px solid var(--line); }
+  .hero { min-height: 92svh; }
+  .hero-title { font-size: clamp(56px, 18vw, 96px); }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a class="nav-brand" href="#top"><span>生</span>生命之歌</a>
+  <div class="nav-links">
+    <a href="#film">影片</a>
+    <a href="#story">故事</a>
+    <a href="#making">制作</a>
+    <a href="#refs">参考</a>
+    <a href="#docs">资料</a>
+  </div>
+  <a class="nav-gh" href="https://github.com/Luxurylove" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5 3.2 9.3 7.7 10.8.6.1.8-.2.8-.6v-2c-3.1.7-3.8-1.3-3.8-1.3-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 1.7 2.6 1.2 3.2.9.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.2-5.1-5.5 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.4.1-2.9 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.5.2 2.6.1 2.9.7.8 1.1 1.8 1.1 3 0 4.3-2.6 5.2-5.1 5.5.4.3.8 1 .8 2v3c0 .4.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5Z"/></svg>
+    <span>Luxurylove</span>
+  </a>
+</nav>
+
+<!-- ================= 首屏 ================= -->
+<header class="hero" id="top">
+  <div class="hero-media">
+    <img src="assets/hero.jpg" alt="《生命之歌》剧照：少年元元与父亲在暖光里弹琴" />
+  </div>
+
+  <div class="hero-inner">
+    <p class="kicker"><i></i>AI 科幻短片 · 改编自王晋康《生命之歌》</p>
+    <h1 class="hero-title">生命之歌</h1>
+    <p class="hero-en">SONG OF LIFE</p>
+    <p class="hero-quote">如果元元是你的孩子，<br />你会扣下扳机吗？</p>
+
+    <div class="hero-actions">
+      <button class="btn btn-play" type="button" data-play>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13L19 12 8 5.5Z"/></svg>
+        播放影片 · 02:36
+      </button>
+      <a class="btn btn-ghost" href="#making">看制作过程</a>
+    </div>
+
+    <div class="hero-credits">
+      <b>联合创作</b>
+      王信淳 · 刘艳 · 郑泽帅<br />王毅 · 黄嘉峰
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ================= 影片 ================= -->
+  <section class="section" id="film">
+    <div class="stats reveal">
+      <div class="stat"><b>165<em>s</em></b><span>片长</span></div>
+      <div class="stat"><b>33</b><span>镜头数</span></div>
+      <div class="stat"><b>4</b><span>AI 工具</span></div>
+      <div class="stat"><b>5</b><span>主创成员</span></div>
+    </div>
+  </section>
+
+  <!-- ================= 故事 ================= -->
+  <section class="section" id="story">
+    <div class="section-head">
+      <div>
+        <p class="sec-kicker reveal"><span>01</span> Story</p>
+        <h2 class="sec-title reveal">一个被造出来、又想活下去的孩子</h2>
+      </div>
+      <p class="sec-note reveal">改编自王晋康 1995 年发表于《科幻世界》的短篇《生命之歌》。</p>
+    </div>
+
+    <div class="story-grid">
+      <div class="story-text reveal">
+        <p>生物学家孔昭仁用四十五年造出了机器人男孩元元，把他当亲生儿子养大。五岁之后，元元的心智开始停滞——因为他体内那段从 DNA 里解码出来的「生命之歌」，被父亲亲手锁住了。</p>
+        <p>当孔宪云的丈夫朴重哲破译出这段旋律，元元开始觉醒，全城的机器在几秒钟里走完人类三百万年的进化。姐姐举起了枪，却扣不下去。</p>
+        <p>这不是一部「机器人造反」的科幻片，而是一部关于创造者是否有权杀死自己最得意的造物的伦理悲剧。短片把篇幅留给最后的对望：无论人类还是仿生人，活下去本身，就是最动人的那首生命之歌。</p>
+      </div>
+
+      <div class="acts reveal">
+        <div class="act"><span class="act-num">ACT 01</span><div><h3>温情与谎言</h3><p>元元被当亲儿子养大，五岁后心智停滞，所有人都以为这是终点。</p></div></div>
+        <div class="act"><span class="act-num">ACT 02</span><div><h3>锁与钥匙</h3><p>朴重哲破译「生命之歌」，触发自毁身亡，密码再收不回。</p></div></div>
+        <div class="act"><span class="act-num">ACT 03</span><div><h3>觉醒与爆发</h3><p>旋律化为数据流涌入网络，全球机器几秒走完三百万年进化。</p></div></div>
+        <div class="act"><span class="act-num">ACT 04</span><div><h3>抉择与留白</h3><p>姐姐面对觉醒后的元元举枪，枪响与否未明，结局开放。</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 制作 ================= -->
+  <section class="section" id="making">
+    <div class="section-head">
+      <div>
+        <p class="sec-kicker reveal"><span>02</span> Making of</p>
+        <h2 class="sec-title reveal">一条 AI 工具链，从小说到成片</h2>
+      </div>
+      <p class="sec-note reveal">每个工具只做自己最擅长的一段：一个写、一个画、一个动、一个剪。</p>
+    </div>
+
+    <div class="pipeline reveal">
+      <div class="pipe">
+        <div class="pipe-step">STEP 01</div>
+        <div class="pipe-tool">DeepSeek</div>
+        <div class="pipe-role">文本脑暴</div>
+        <p class="pipe-desc">把改编要求结构化：四幕大纲、三个人物、33 镜分镜、每镜 5 秒，并直接输出英文视频提示词。</p>
+        <div class="pipe-out">产出：<b>大纲 + 33 镜分镜表</b></div>
+      </div>
+      <div class="pipe">
+        <div class="pipe-step">STEP 02</div>
+        <div class="pipe-tool">豆包</div>
+        <div class="pipe-role">图像生成</div>
+        <p class="pipe-desc">生成主角正 / 侧 / 背三视图与客厅、实验室、夜城等场景概念图，作为每个镜头的参考图。</p>
+        <div class="pipe-out">产出：<b>人物 + 场景设定图集</b></div>
+      </div>
+      <div class="pipe">
+        <div class="pipe-step">STEP 03</div>
+        <div class="pipe-tool">agens · 豆包</div>
+        <div class="pipe-role">视频生成</div>
+        <p class="pipe-desc">以参考图做图生视频，七段式英文提示词逐镜生成：景别、动作、环境、光线、情绪、运镜、收尾。</p>
+        <div class="pipe-out">产出：<b>33 个 5 秒镜头</b></div>
+      </div>
+      <div class="pipe">
+        <div class="pipe-step">STEP 04</div>
+        <div class="pipe-tool">剪映</div>
+        <div class="pipe-role">后期合成</div>
+        <p class="pipe-desc">时间线拼接、旁白配音、钢琴 BGM、字幕、暖黄到冷蓝的色温调色与 glitch 转场。</p>
+        <div class="pipe-out">产出：<b>165 秒成片</b></div>
+      </div>
+    </div>
+    <p class="pipeline-caption reveal"><strong>可复用的方法论：</strong>先把故事聊成结构，再用三视图锁住人物，最后用同一套提示词模板批量生成镜头——这条链路可以套用到任何短篇科幻小说上。</p>
+  </section>
+
+  <!-- ================= 参考图 ================= -->
+  <section class="section" id="refs">
+    <div class="section-head">
+      <div>
+        <p class="sec-kicker reveal"><span>03</span> Art References</p>
+        <h2 class="sec-title reveal">人物、分镜与乐谱</h2>
+      </div>
+      <p class="sec-note reveal">AI 生成的三视图与分镜板，是保证 33 个镜头里人物不换脸的关键。</p>
+    </div>
+
+    <div class="gallery reveal">
+      <figure class="shot">
+        <img src="assets/yuanyuan.jpg" alt="元元的三视图：正、侧、背，后颈蓝色 LED 开关" loading="lazy" data-zoom />
+        <figcaption>元元 · 正 / 侧 / 背三视图（豆包生成）</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/storyboard.jpg" alt="S01–S30 分镜一览" loading="lazy" data-zoom />
+        <figcaption>33 镜分镜板 · 从暖黄客厅到蓝光夜城</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/score-wall.jpg" alt="乐谱墙：从旧乐谱到蓝色发光的生命之歌" loading="lazy" data-zoom />
+        <figcaption>乐谱墙：旧谱 → 蓝光觉醒</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= 资料 ================= -->
+  <section class="section" id="docs">
+    <div class="section-head">
+      <div>
+        <p class="sec-kicker reveal"><span>04</span> Production Kit</p>
+        <h2 class="sec-title reveal">制作资料</h2>
+      </div>
+      <p class="sec-note reveal">完整的分镜剧本与制作复盘，可下载或直接打开。</p>
+    </div>
+
+    <div class="downloads reveal">
+      <a class="dl" href="assets/life-song-storyboard.pdf" target="_blank" rel="noopener">
+        <div>
+          <div class="dl-name">完整分镜剧本</div>
+          <div class="dl-meta">PDF · 19 场时间码 · 16 段 AI 视频提示词 · 旁白文案</div>
+        </div>
+        <span class="dl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></svg></span>
+      </a>
+      <a class="dl" href="assets/life-song-production.pptx" target="_blank" rel="noopener">
+        <div>
+          <div class="dl-name">AI 短片制作全流程</div>
+          <div class="dl-meta">PPTX · 14 页 · 剧本、图像、视频、后期四步拆解</div>
+        </div>
+        <span class="dl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></svg></span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <span>生命之歌 · SONG OF LIFE　｜　165s AI 短片</span>
+  <span><a href="https://github.com/Luxurylove" target="_blank" rel="noopener">Luxurylove</a> · 王信淳 · 刘艳 · 郑泽帅 · 王毅 · 黄嘉峰</span>
+</footer>
+
+<!-- ================= 视频弹窗 ================= -->
+<div class="lightbox" id="lightbox" hidden>
+  <div class="lightbox-backdrop" data-close></div>
+  <div class="lightbox-panel" role="dialog" aria-modal="true" aria-label="播放《生命之歌》">
+    <button class="lightbox-close" type="button" aria-label="关闭" data-close>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <video id="player" controls playsinline preload="none" poster="assets/poster.jpg">
+      <source src="assets/life.mp4" type="video/mp4" />
+      你的浏览器不支持 HTML5 视频。
+    </video>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var nav = document.getElementById("nav");
+  var onScroll = function () { nav.classList.toggle("scrolled", window.scrollY > 30); };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* 进场 */
+  var els = [].slice.call(document.querySelectorAll(".reveal"));
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    els.forEach(function (el) { io.observe(el); });
+  } else {
+    els.forEach(function (el) { el.classList.add("in"); });
+  }
+
+  /* 播放弹窗 */
+  var lightbox = document.getElementById("lightbox");
+  var player = document.getElementById("player");
+
+  function openPlayer() {
+    lightbox.hidden = false;
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(function () {
+      lightbox.classList.add("open");
+      var p = player.play();
+      if (p && p.catch) p.catch(function () {});
+      player.focus();
+    });
+  }
+  function closePlayer() {
+    lightbox.classList.remove("open");
+    try { player.pause(); } catch (e) {}
+    document.body.style.overflow = "";
+    setTimeout(function () { lightbox.hidden = true; }, 360);
+  }
+
+  [].slice.call(document.querySelectorAll("[data-play]")).forEach(function (b) {
+    b.addEventListener("click", openPlayer);
+  });
+  [].slice.call(document.querySelectorAll("[data-close]")).forEach(function (b) {
+    b.addEventListener("click", closePlayer);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !lightbox.hidden) closePlayer();
+  });
+
+  /* 参考图点击放大 */
+  [].slice.call(document.querySelectorAll("[data-zoom]")).forEach(function (img) {
+    img.addEventListener("click", function () {
+      var w = window.open("", "_blank");
+      if (w) {
+        w.document.write('<title>' + img.alt + '</title><body style="margin:0;background:#000;display:grid;place-items:center;min-height:100vh"><img src="' + img.src + '" style="max-width:100%;max-height:100vh" alt=""></body>');
+        w.document.close();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

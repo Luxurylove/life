@@ -1,0 +1,6 @@
+*.mov
+*.MOV
+.work/
+Thumbs.db
+desktop.ini
+.DS_Store
