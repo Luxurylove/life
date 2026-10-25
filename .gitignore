@@ -3,6 +3,8 @@
 .work/
 # 成片走 B 站外链，mp4 不再进仓库（本地留作备份）
 assets/life.mp4
+# 播放器封面帧已随 <video> 一起废弃，仅本地保留
+assets/poster.jpg
 Thumbs.db
 desktop.ini
 .DS_Store
