@@ -9,9 +9,7 @@
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0906'/%3E%3Cpath d='M22 42V22h4l6 10 6-10h4v20h-4V30l-6 9-6-9v12z' fill='%23d9b27c'/%3E%3C/svg%3E" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Noto+Serif+SC:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+<!-- 字体使用系统字体：国内访问 Google Fonts 会被阻断并阻塞首屏 -->
 
 <style>
 /* ============ 设计变量 ============ */
@@ -27,9 +25,9 @@
   --gold: #d9b27c;
   --red: #b8442f;
   --blue: #4c8dff;
-  --font-display: "Fraunces", "Noto Serif SC", "Songti SC", serif;
-  --font-cn: "Noto Serif SC", "Songti SC", "SimSun", serif;
-  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-display: Georgia, "Times New Roman", "Songti SC", "STSong", "SimSun", serif;
+  --font-cn: "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", serif;
+  --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, "Segoe UI", sans-serif;
   --margin: clamp(20px, 5vw, 88px);
   --max: 1360px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -211,6 +209,28 @@ p { margin: 0; }
 .lightbox-panel { position: relative; width: min(1180px, 100%); background: #000; border: 1px solid var(--line); box-shadow: 0 40px 120px -40px #000; opacity: 0; transform: translateY(20px); transition: opacity .4s var(--ease), transform .5s var(--ease-out); }
 .lightbox.open .lightbox-panel { opacity: 1; transform: none; }
 .lightbox video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.lightbox-stage { position: relative; }
+.media-buffering {
+  position: absolute; inset: 0; display: none;
+  flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  background: rgba(6, 5, 4, .55); color: var(--text);
+  font-size: 13px; letter-spacing: .08em; text-align: center; padding: 20px;
+  pointer-events: none;
+}
+.media-buffering.is-visible { display: flex; }
+.media-spin {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid rgba(241, 233, 219, .25); border-top-color: var(--gold);
+  animation: mediaSpin .9s linear infinite;
+}
+@keyframes mediaSpin { to { transform: rotate(360deg); } }
+.media-download {
+  pointer-events: auto; margin-top: 4px; padding: 7px 14px;
+  border: 1px solid var(--line-2); border-radius: 999px;
+  font-size: 12px; color: var(--gold); transition: all .3s var(--ease);
+}
+.media-download:hover { background: var(--gold); border-color: var(--gold); color: #17120c; }
+@media (prefers-reduced-motion: reduce) { .media-spin { animation: none; } }
 .lightbox-close { position: absolute; top: 12px; right: 12px; z-index: 2; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.3); color: #fff; transition: all .3s var(--ease); }
 .lightbox-close:hover { background: var(--gold); border-color: var(--gold); color: #17120c; transform: rotate(90deg); }
 .lightbox-close svg { width: 18px; height: 18px; }
@@ -436,10 +456,17 @@ p { margin: 0; }
     <button class="lightbox-close" type="button" aria-label="关闭" data-close>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
     </button>
-    <video id="player" controls playsinline preload="none" poster="assets/poster.jpg">
-      <source src="assets/life.mp4" type="video/mp4" />
-      你的浏览器不支持 HTML5 视频。
-    </video>
+    <div class="lightbox-stage">
+      <video id="player" controls playsinline preload="none" poster="assets/poster.jpg">
+        <source src="assets/life.mp4" type="video/mp4" />
+        你的浏览器不支持 HTML5 视频。
+      </video>
+      <div class="media-buffering" id="buffering">
+        <span class="media-spin" aria-hidden="true"></span>
+        <span>正在缓冲…</span>
+        <a class="media-download" href="assets/life.mp4" download>网速慢？下载成片（约 30MB）</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -467,6 +494,18 @@ p { margin: 0; }
   /* 播放弹窗 */
   var lightbox = document.getElementById("lightbox");
   var player = document.getElementById("player");
+  var buffering = document.getElementById("buffering");
+
+  if (buffering && player) {
+    var showBuf = function () { buffering.classList.add("is-visible"); };
+    var hideBuf = function () { buffering.classList.remove("is-visible"); };
+    player.addEventListener("waiting", showBuf);
+    player.addEventListener("stalled", showBuf);
+    player.addEventListener("seeking", showBuf);
+    player.addEventListener("playing", hideBuf);
+    player.addEventListener("canplay", hideBuf);
+    player.addEventListener("error", showBuf);
+  }
 
   function openPlayer() {
     lightbox.hidden = false;
