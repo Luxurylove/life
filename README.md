@@ -3,7 +3,7 @@
 AI 科幻短片独立展示页：改编自王晋康 1995 年科幻短篇《生命之歌》，
 165 秒 / 33 镜 / 16:9，DeepSeek × 豆包 × agens × 剪映 全流程 AI 制作。
 
-- 成片在线播放（`assets/life.mp4`，1080p，约 49MB）
+- 成片在线播放（B 站外链播放器 `BV1HwnU6ZEdb`，国内秒开、自动切清晰度）
 - 故事与四幕结构
 - AI 制作工具链（四步）
 - 人物三视图、33 镜分镜板、乐谱墙参考图
@@ -30,7 +30,7 @@ python -m http.server 8080
 | 文件 | 说明 |
 | --- | --- |
 | `index.html` | 展示页（含播放器、故事、制作流程、参考资料） |
-| `assets/life.mp4` | 网页版成片（1080p / 30fps / H.264） |
+| `assets/life.mp4` | 网页版成片（1080p / 30fps / H.264）——**已被 .gitignore 忽略**，只在本地留作备份，线上播放走 B 站 |
 | `assets/cover.jpg` | 首屏与作品集共用的封面 |
 | `assets/poster.jpg` | 播放器封面帧 |
 | `assets/yuanyuan.jpg` | 元元三视图 |
